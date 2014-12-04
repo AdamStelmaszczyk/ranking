@@ -7,7 +7,7 @@
 
 ## Instalacja na serwerze produkcyjnym
 
-Pliki z głównego katalogu repozytorium skopiuj (np. przez FTP) do głównego katalogu serwera MySQL + PHP. 
+Pliki z głównego katalogu repozytorium skopiuj (np. przez FTP) do głównego katalogu serwera MySQL + PHP.  
 Darmowy serwer z domeną bez reklam oferuje np. www.000webhost.com.
 
 ## Środowisko programistyczne
