@@ -23,9 +23,12 @@ Szczegóły połączenia z bazą MySQL należy podmienić w pliku `connect.php`.
 
 To wszystko! Ranking już powinien śmigać. Przykładowe dane można śmiało usunąć (np. w phpMyAdmin).
 
-## Środowisko programistyczne dla chcących rozwijać ranking
+## Środowisko programistyczne dla rozwijających ranking
 
 Środowiskiem programistycznym jest lokalny Apache, MySQL i PHP. Instalacja:
 - [Systemy uniksopodobne](http://www.ubuntu.pl/forum/viewtopic.php?t=120154) (zalecane)
 - [Windows](http://www.php-fusion.pl/articles.php?article_id=46&rowstart=1)
 
+Błędy, usprawnienia, pomysły itp. proszę zgłaszać poprzez [Issues](https://github.com/AdamStelmaszczyk/ranking/issues).
+
+Gorąco również zachęcam do pomagania poprzez [Pull Request](https://help.github.com/articles/creating-a-pull-request/).
