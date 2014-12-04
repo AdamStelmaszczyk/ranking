@@ -13,5 +13,5 @@ Darmowy serwer z domeną bez reklam oferuje np. www.000webhost.com.
 ## Środowisko programistyczne
 
 Środowiskiem programistycznym jest Apache, MySQL, PHP. Instalacja:
-- [Systemy uniksopodobne](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu) (zalecane)
+- [Systemy uniksopodobne](http://www.ubuntu.pl/forum/viewtopic.php?t=120154) (zalecane)
 - [Windows](http://www.php-fusion.pl/articles.php?article_id=46&rowstart=1)
