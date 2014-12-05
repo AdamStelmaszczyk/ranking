@@ -97,7 +97,7 @@ require 'header.php';
 <form method="post" >
 	<h3>Drużyny</h3>
 	<div class="row form-group">
-		<div class="col-xs-6 <? if (isset($ratingChange) && ($ratingChange > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && ($ratingChange > 0)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
 				<?php echo sprintf("%+d", $ratingChange) ?>
@@ -122,7 +122,7 @@ require 'header.php';
 				?>
 			</select>
 		</div>
-		<div class="col-xs-6 <? if (isset($ratingChange) && (-$ratingChange > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && (-$ratingChange > 0)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
 				<?php echo sprintf("%+d", -$ratingChange) ?>
