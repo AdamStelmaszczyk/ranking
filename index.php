@@ -134,9 +134,10 @@ $('.name').popover({
 	placement: 'top',
 	html: true,
 	trigger: 'click focus',
-	content: function(){
-        return getContent($.now(), $(this).attr('id'));
-    }
+	title: 'Punkty zawodnika w czasie',
+	content: function() { 
+		return getContent($.now(), $(this).attr('id')); 
+	}
 });
 
 // closing popover on click outside
@@ -164,7 +165,7 @@ function getContent(divId, name) {
 				},
 				yAxis: {
 					title: {
-						text: 'Punkty'
+						text: null
 					},
 				},
 				xAxis: {
