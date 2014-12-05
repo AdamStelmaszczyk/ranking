@@ -20,12 +20,12 @@ $total_matches = getTotalMatches($con);
 require 'header.php';
 ?>
 
-<script src="highcharts.js"></script>
-<script src="highcharts-more.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/highcharts-more.js"></script>
 
-<script src="bootstrap.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
-<script src="jquery-ui.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 
 <div class="container">
 
@@ -192,7 +192,7 @@ function getContent(divId, name) {
 			});
         }
     });
-	return '<div style="width: 250px; height: 250px; background:url(spinner.gif) no-repeat center center" id="' + divId + '"></div>';
+	return '<div style="width: 250px; height: 250px; background:url(img/spinner.gif) no-repeat center center" id="' + divId + '"></div>';
 }
 
 $.ajax({

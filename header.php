@@ -3,20 +3,20 @@
 <head profile="http://www.w3.org/2005/10/profile">
 <link rel="icon" 
       type="image/png" 
-      href="favicon.ico">
+      href="img/favicon.ico">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ranking</title>
 
 <!-- Bootstrap CSS -->
-<link href="bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="custom.css" rel="stylesheet">
+<link href="css/custom.css" rel="stylesheet">
 
 <!-- JQuery -->
-<script src="jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 
 </head>
 <body>
