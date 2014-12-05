@@ -119,7 +119,7 @@ require 'header.php';
 </div>
 
 <div style="text-align: center; padding: 10px">
-	<a href="mailto:adam.stelmaszczyk@hp.com">Mann-webmachen kontakten</a>
+	<a href="https://github.com/AdamStelmaszczyk/ranking">Chcesz mieć taki ranking? A może masz uwagi? Odwiedź stronę projektu.</a>
 </div>
 
 <script>
