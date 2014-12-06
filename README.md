@@ -22,6 +22,7 @@ W tym momencie strona rankingu powinna wyświetlać błąd połączenia z bazą 
 Szczegóły połączenia z bazą MySQL należy podmienić w pliku `connect.php`.
 
 To wszystko! Ranking już powinien śmigać. Przykładowe dane można śmiało usunąć (np. w phpMyAdmin).
+Hasło dla zawodników (które zapobiega głównie przypadkowym kliknięciom) jest zapisane w `db.php`.
 
 ## Środowisko programistyczne dla rozwijających ranking
 
