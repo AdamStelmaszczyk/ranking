@@ -5,7 +5,7 @@ function checkPassword($pass) {
 }
 
 function getRanking($con) {
-	$result = mysqli_query($con, "SELECT imie, nazwisko, punkty, meczy, wygranych FROM gracze ORDER BY punkty DESC");
+	$result = mysqli_query($con, "SELECT imie, nazwisko, punkty, meczy, wygranych FROM gracze ORDER BY punkty DESC, wygranych/meczy DESC");
 	$ranking = array();
 	while ($row = mysqli_fetch_array($result)) {
 		$ranking[] = $row;
