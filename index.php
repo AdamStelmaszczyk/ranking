@@ -105,7 +105,7 @@ require 'header.php';
 					echo '<tr>';
 					echo '<td class="col-md-1">' . $placeToRender . '</td>';
 					echo '<td  id="' . $row['nazwisko'] . '" class="col-md-1"><strong><a style="color:' . getRankColor($row['punkty']) . '" data-toggle="popover" class="name" id="' . $row['nazwisko']. '">' . $row['imie'] . ' ' . $row['nazwisko'] . '</a></strong></td>';
-					echo '<td class="col-md-1">' . round(100 * $row['wygranych'] / $row['meczy']) . '</td>';
+					echo '<td class="col-md-1">' . (($row['meczy'] == 0) ? 'brak' : round(100 * $row['wygranych'] / $row['meczy'])) . '</td>';
 					echo '<td class="col-md-1">' . $row['punkty'] . '</td>';
 					echo '</tr>';
 					$lastPoints = $row['punkty'];
