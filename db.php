@@ -5,7 +5,7 @@ function checkPassword($pass) {
 }
 
 function getRanking($con) {
-	$result = mysqli_query($con, "SELECT imie, nazwisko, punkty FROM gracze ORDER BY punkty DESC");
+	$result = mysqli_query($con, "SELECT imie, nazwisko, punkty, meczy, wygranych FROM gracze ORDER BY punkty DESC");
 	$ranking = array();
 	while ($row = mysqli_fetch_array($result)) {
 		$ranking[] = $row;
@@ -39,7 +39,7 @@ function getPoints($data, $surname) {
 			return $row['punkty'];
 		}
 	}		
-	throw new Exception('No "' . $surname . '" in data.');
+	throw new Exception("No $surname in database.");
 }
 
 function getMatches($con) {
@@ -58,17 +58,17 @@ function getTotalMatches($con) {
 }
 
 function undoLastMatch($con) {
-	$result = mysqli_query($con, "SELECT id, a, b, c, d, delta FROM `mecze` ORDER BY `data` DESC LIMIT 1");
+	$result = mysqli_query($con, "SELECT id, a, b, c, d, delta FROM mecze ORDER BY data DESC LIMIT 1");
 	$row = mysqli_fetch_array($result);
 	
 	$delta = $row['delta'];
 	if ($row['b'] == null && $row['d'] != null) $delta = 2 * $row['delta'];
-	mysqli_query($con, "UPDATE `gracze` SET `punkty` = `punkty` - " . $delta . " WHERE `nazwisko` = '" . $row['a'] . "'");
-	mysqli_query($con, "UPDATE `gracze` SET `punkty` = `punkty` - " . $delta . " WHERE `nazwisko` = '" . $row['b'] . "'");
+	mysqli_query($con, "UPDATE gracze SET punkty = punkty - $delta, meczy = meczy - 1, wygranych = wygranych - 1 WHERE nazwisko = '" . $row['a'] . "'");
+	mysqli_query($con, "UPDATE gracze SET punkty = punkty - $delta, meczy = meczy - 1, wygranych = wygranych - 1 WHERE nazwisko = '" . $row['b'] . "'");
 	
 	$delta = $row['delta'];
 	if ($row['b'] != null && $row['d'] == null) $delta = 2 * $row['delta'];
-	mysqli_query($con, "UPDATE `gracze` SET `punkty` = `punkty` + " . $delta . " WHERE `nazwisko` = '" . $row['c'] . "'");
-	mysqli_query($con, "UPDATE `gracze` SET `punkty` = `punkty` + " . $delta . " WHERE `nazwisko` = '" . $row['d'] . "'");
-	mysqli_query($con, "DELETE FROM `mecze` WHERE `id` = " . $row['id']);
+	mysqli_query($con, "UPDATE gracze SET punkty = punkty + $delta, meczy = meczy - 1 WHERE nazwisko = '" . $row['c'] . "'");
+	mysqli_query($con, "UPDATE gracze SET punkty = punkty + $delta, meczy = meczy - 1 WHERE nazwisko = '" . $row['d'] . "'");
+	mysqli_query($con, "DELETE FROM mecze WHERE id = " . $row['id']);
 }

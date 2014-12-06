@@ -15,7 +15,7 @@ if (isset($_REQUEST['a']) &&
 	isset($_REQUEST['pass'])) {
 		
 	if ((($_REQUEST['ab'] == 10) ^ ($_REQUEST['cd'] == 10)) != 1) {
-		$noTen = true;
+		$noOneTen = true;
 	} else {
 		
 		if ($_REQUEST['a'] == "null" || $_REQUEST['c'] == "null" 
@@ -23,57 +23,74 @@ if (isset($_REQUEST['a']) &&
 		 || $_REQUEST['b'] == $_REQUEST['c'] || ($_REQUEST['b'] != 'null' && $_REQUEST['b'] == $_REQUEST['d'])) {
 			$badTeams = true;
 		} else {
-			$actualScore = actualScore($_REQUEST['ab'], $_REQUEST['cd']);
-			
-			if ($_REQUEST['b'] == $_REQUEST['a']) $_REQUEST['b'] = 'null';
-			if ($_REQUEST['d'] == $_REQUEST['c']) $_REQUEST['d'] = 'null';
-			
-			$ra = getPoints($ranking, $_REQUEST['a']);
-			$rb = ($_REQUEST['b'] !== 'null') ? getPoints($ranking, $_REQUEST['b']) : $ra;
-			$rc = getPoints($ranking, $_REQUEST['c']);
-			$rd = ($_REQUEST['d'] !== 'null') ? getPoints($ranking, $_REQUEST['d']) : $rc;
+
+			$a = $_REQUEST['a'];
+			$b = $_REQUEST['b'];
+			$c = $_REQUEST['c'];
+			$d = $_REQUEST['d'];
+			$ab = $_REQUEST['ab'];
+			$cd = $_REQUEST['cd'];
+
+			// put a & b as winners, c & d as losers
+			if ($_REQUEST['cd'] == 10) {
+				$a = $_REQUEST['c'];
+				$b = $_REQUEST['d'];
+				$c = $_REQUEST['a'];
+				$d = $_REQUEST['b'];
+				$ab = $_REQUEST['cd'];
+				$cd = $_REQUEST['ab'];
+			}
+
+			// if somebody chosen himself two times in one team that's valid, but we count him only as one player
+			if ($a == $b) $b = 'null'; 
+			if ($c == $d) $d = 'null';
+
+			// ensure alphabetical order of names in a team
+			if ($b != 'null' && $b < $a) { $temp = $a; $a = $b; $b = $temp; } 
+			if ($d != 'null' && $d < $c) { $temp = $c; $c = $d; $d = $temp; }
+
+			$ra = getPoints($ranking, $a);
+			$rb = ($b !== 'null') ? getPoints($ranking, $b) : $ra;
+			$rc = getPoints($ranking, $c);
+			$rd = ($d !== 'null') ? getPoints($ranking, $d) : $rc;
+
+			$actualScore = actualScore($ab, $cd);
 			
 			$expectedScore = expectedScore($ra, $rb, $rc, $rd);
 			
-			$ratingChange = ratingChange($actualScore, $expectedScore);
-			
+			$ratingChange = ratingChange($actualScore, $expectedScore); // ratingChange is delta
+
 			$ra_prim = $ra + $ratingChange;
-			if ($_REQUEST['b'] === 'null' && $_REQUEST['d'] !== 'null') {
-				$ra_prim += $ratingChange;
-			} else {
-				$rb_prim = $rb + $ratingChange;
-			}
+			$rb_prim = $rb + $ratingChange;
 			$rc_prim = $rc - $ratingChange;
-			if ($_REQUEST['d'] === 'null' && $_REQUEST['b'] !== 'null') {
-				$rc_prim += $ratingChange;
-			} else {
-				$rd_prim = $rd - $ratingChange;
+			$rd_prim = $rd - $ratingChange;
+
+			// 1 vs 2 case
+			if ($b === 'null' && $d !== 'null') {
+				$ra_prim = $ra + $ratingChange; // single player won, he wins additional delta
 			}
-			
+			if ($d === 'null' && $b !== 'null') {
+				$rc_prim = $rc - $ratingChange; // single player lost, he loses additional delta
+			}
+
 			if (checkPassword($_REQUEST['pass'])) {
 				
-				mysqli_query($con, "UPDATE gracze SET punkty = " . $ra_prim . " WHERE nazwisko = '". $_REQUEST['a'] . "'");
-				if ($_REQUEST['b'] !== 'null') {
-					mysqli_query($con, "UPDATE gracze SET punkty = " . $rb_prim . " WHERE nazwisko = '". $_REQUEST['b'] . "'");
+				mysqli_query($con, "UPDATE gracze SET punkty = " . $ra_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $a . "'");
+				if ($b !== 'null') {
+					mysqli_query($con, "UPDATE gracze SET punkty = " . $rb_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $b . "'");
 				}
-				mysqli_query($con, "UPDATE gracze SET punkty = " . $rc_prim . " WHERE nazwisko = '". $_REQUEST['c'] . "'");
-				if ($_REQUEST['d'] !== 'null') {
-					mysqli_query($con, "UPDATE gracze SET punkty = " . $rd_prim . " WHERE nazwisko = '". $_REQUEST['d'] . "'");
+				mysqli_query($con, "UPDATE gracze SET punkty = " . $rc_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $c . "'");
+				if ($d !== 'null') {
+					mysqli_query($con, "UPDATE gracze SET punkty = " . $rd_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $d . "'");
 				}
-				
-				$a = ($_REQUEST['ab'] == 10) ? $_REQUEST['a'] : $_REQUEST['c'];
-				$b = ($_REQUEST['ab'] == 10) ? $_REQUEST['b'] : $_REQUEST['d'];
-				if ($b != 'null' && $b < $a) { $temp = $a; $a = $b; $b = $temp; }
-				$b = ($b == 'null') ? 'NULL' : "'$b'";
-				
-				$c = ($_REQUEST['ab'] == 10) ? $_REQUEST['c'] : $_REQUEST['a'];
-				$d = ($_REQUEST['ab'] == 10) ? $_REQUEST['d'] : $_REQUEST['b'];
-				if ($d != 'null' && $d < $c) { $temp = $c; $c = $d; $d = $temp; }
-				$d = ($d == 'null') ? 'NULL' : "'$d'";
 				
 				$cd = ($_REQUEST['ab'] == 10) ? $_REQUEST['cd'] : $_REQUEST['ab'];
 				$delta = abs($ratingChange);
-				mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ('$a', $b, '$c', $d, $cd, $delta)");
+				$a = "'$a'";
+				if ($b !== 'null') $b = "'$b'";
+				$c = "'$c'";
+				if ($d !== 'null') $d = "'$d'";
+				mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $delta)");
 				
 				$ranking = getRanking($con);
 				
@@ -97,10 +114,10 @@ require 'header.php';
 <form method="post" >
 	<h3>Drużyny</h3>
 	<div class="row form-group">
-		<div class="col-xs-6 <?php if (isset($ratingChange) && ($ratingChange > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && ($_REQUEST['ab'] == 10)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
-				<?php echo sprintf("%+d", $ratingChange) ?>
+				<?php echo ($_REQUEST['ab'] == 10) ? sprintf("%+d", $ratingChange) : sprintf("%d", -$ratingChange) ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="a" id="a">
@@ -122,10 +139,10 @@ require 'header.php';
 				?>
 			</select>
 		</div>
-		<div class="col-xs-6 <?php if (isset($ratingChange) && (-$ratingChange > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && ($_REQUEST['cd'] == 10)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
-				<?php echo sprintf("%+d", -$ratingChange) ?>
+				<?php echo ($_REQUEST['cd'] == 10) ? sprintf("%+d", $ratingChange) : sprintf("%d", -$ratingChange) ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="c" id="c">
@@ -150,9 +167,9 @@ require 'header.php';
 	</div>
 	<h3>Wynik</h3>
 	<h6><span id="expected">&nbsp;</span></h6>
-	<div class="row form-group <?php if ($noTen) echo 'has-error'; ?>">
+	<div class="row form-group <?php if ($noOneTen) echo 'has-error'; ?>">
 		<div class="col-xs-6">
-			<?php if ($noTen) echo '<label class="control-label" for="ab">Gramy do 10 bramek</label>'; ?>
+			<?php if ($noOneTen) echo '<label class="control-label" for="ab">Gramy do 10 bramek</label>'; ?>
 			<select class="form-control" name="ab" id="ab">
 			<?php
 				if (!isset($_REQUEST['ab'])) $_REQUEST['ab'] = 10;
@@ -164,7 +181,7 @@ require 'header.php';
 			</select>
 		</div>
 		<div class="col-xs-6">
-			<?php if ($noTen) echo '<label class="control-label" for="cd">Gramy do 10 bramek</label>'; ?>
+			<?php if ($noOneTen) echo '<label class="control-label" for="cd">Gramy do 10 bramek</label>'; ?>
 			<select class="form-control" name="cd" id="cd">
 			<?php
 				if (!isset($_REQUEST['cd'])) $_REQUEST['cd'] = 8;
