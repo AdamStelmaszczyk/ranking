@@ -12,8 +12,7 @@ if (isset($_REQUEST['name']) &&
 		$wrongFields = true;
 	} else {
 		if (checkPassword($_REQUEST['pass'])) {
-			mysqli_query($con, "INSERT INTO gracze (imie, nazwisko, punkty) VALUES ('" . $_REQUEST['name'] . "', '" . $_REQUEST['surname'] . "', 1000)");
-			$saved = true;
+			$saved = mysqli_query($con, "INSERT INTO gracze (imie, nazwisko, punkty) VALUES ('" . $_REQUEST['name'] . "', '" . $_REQUEST['surname'] . "', 1000)");
 		} else {
 			$wrongPassword = true;
 		}
@@ -26,7 +25,8 @@ require 'header.php';
 <div class="container">
 
 <?php 
-if (isset($saved)) echo '<div class="alert alert-success">Dodano zawodnika ' . $name . ' ' . $surname . ' z 1000 punktów rankingowych na początek.</div>';
+if (isset($saved) && $saved) echo '<div class="alert alert-success">Dodano zawodnika ' . $name . ' ' . $surname . ' z 1000 punktów rankingowych na początek.</div>';
+if (isset($saved) && !$saved) echo '<div class="alert alert-warning">Zawodnik o nazwisku ' . $surname . ' już istnieje. Podaj inne nazwisko.</div>';
 if (isset($wrongPassword)) echo '<div class="alert alert-warning">Nie zapisano. Podane złe hasło.</div>' ;
 if (isset($wrongFields)) echo '<div class="alert alert-warning">Nie zapisano. Wypełnij wszystkie pola.</div>';
 ?>
