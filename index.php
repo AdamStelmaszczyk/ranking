@@ -12,8 +12,14 @@ if (isset($_REQUEST['pass'])) {
 	}
 }
 
-$ranking = getRanking($con);
-$surnames = getSortedSurnames($ranking);
+$allPlayers = false;
+if( isset($_REQUEST['allPlayers'])){
+    $allPlayers = ($_REQUEST['allPlayers'] === "true")?true:false;
+    $ranking = ($_REQUEST['allPlayers'] === "true")?getRanking($con):getRankingForActivePlayers($con);    
+} else {
+    $ranking = getRankingForActivePlayers($con);    
+}
+ 
 $matches = getMatches($con);
 $total_matches = getTotalMatches($con);
 
@@ -83,7 +89,14 @@ require 'header.php';
 
 <div class="jumbotron">
 	<h3>Ranking </h3>
-	<h6>(na podstawie <?php echo $total_matches; ?> meczy)</h6>
+        <h6>(<?php
+            if (!$allPlayers){
+             echo "<a href=\"index.php?allPlayers=true\">aktywnych zawodników</a>";
+            }else{
+              echo "<a href=\"index.php?allPlayers=false\">wszystkich zawodników</a>";  
+            }
+            ?>
+            na podstawie <?php echo $total_matches; ?> meczy)</h6>
 	
 	<table class="table table-striped text-left">
 		<thead>
