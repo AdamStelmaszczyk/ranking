@@ -42,7 +42,7 @@ require 'header.php';
 
 	<h3>Ostatnie mecze</h3>
 	
-	<h6>(<a href="#" id="undo">wycofaj ostatni</a>)</h6>
+	<h6>(<a href="#" id="undo" title="Usuń ostatni mecz. Tej operacji nie da się odwrócić.">wycofaj ostatni</a>)</h6>
 	
 	<div id="password">
 		<form method="post">
@@ -90,13 +90,13 @@ require 'header.php';
 <div class="jumbotron">
 	<h3>Ranking </h3>
         <h6>(<?php
-            if (!$allPlayers){
-             echo "<a href=\"index.php?allPlayers=true\">aktywnych zawodników</a>";
-            }else{
-              echo "<a href=\"index.php?allPlayers=false\">wszystkich zawodników</a>";  
+            if (!$allPlayers) {
+            	echo '<a href="index.php?allPlayers=true" title="Aktywni zawodnicy wprowadzili mecz w ostatnich 2 miesiącach. Kliknij, aby przełączyć.">aktywnych</a>';
+            } else {
+            	echo '<a href="index.php?allPlayers=false" title="Aktywni zawodnicy wprowadzili mecz w ostatnich 2 miesiącach. Kliknij, aby przełączyć.">wszystkich</a>';  
             }
             ?>
-            na podstawie <?php echo $total_matches; ?> meczy)</h6>
+            zawodników na podstawie <?php echo $total_matches; ?> meczy)</h6>
 	
 	<table class="table table-striped text-left">
 		<thead>
