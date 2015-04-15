@@ -13,7 +13,7 @@ if (isset($_REQUEST['pass'])) {
 }
 
 $allPlayers = false;
-if( isset($_REQUEST['allPlayers'])){
+if (isset($_REQUEST['allPlayers'])) {
     $allPlayers = ($_REQUEST['allPlayers'] === "true")?true:false;
     $ranking = ($_REQUEST['allPlayers'] === "true")?getRanking($con):getRankingForActivePlayers($con);    
 } else {
@@ -213,8 +213,20 @@ function getContent(divId, name) {
 	return '<div style="width: 250px; height: 250px; background:url(img/spinner.gif) no-repeat center center" id="' + divId + '"></div>';
 }
 
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+}
+
 $.ajax({
 	url: "histogram.php",
+	data: { allPlayers: getUrlParameter('allPlayers') },
 	success: function(json) {
 		$('#container').highcharts({
 			chart: {

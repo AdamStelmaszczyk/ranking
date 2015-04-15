@@ -5,7 +5,11 @@ require 'math.php';
 require 'db.php';
 require 'connect.php';
 
-$ranking = getRanking($con);
+if ($_REQUEST['allPlayers'] === "true") {
+	$ranking = getRanking($con);
+} else {
+	$ranking = getRankingForActivePlayers($con);
+}
 
 $step = 50;
 
