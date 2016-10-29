@@ -24,6 +24,8 @@ CREATE TABLE `gracze` (
   `imie` varchar(64) NOT NULL,
   `nazwisko` varchar(64) NOT NULL,
   `punkty` int(11) NOT NULL,
+  `wygranych` int(11) NOT NULL DEFAULT 0,
+  `meczy` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nazwisko` (`nazwisko`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
