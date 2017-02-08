@@ -13,8 +13,7 @@ if (isset($_REQUEST['a']) &&
 	isset($_REQUEST['c']) && 
 	isset($_REQUEST['d']) && 
 	isset($_REQUEST['ab']) && 
-	isset($_REQUEST['cd']) &&
-	isset($_REQUEST['pass'])) {
+	isset($_REQUEST['cd'])) {
 		
 	if ((($_REQUEST['ab'] == 10) ^ ($_REQUEST['cd'] == 10)) != 1) {
 		$noOneTen = true;
@@ -75,31 +74,25 @@ if (isset($_REQUEST['a']) &&
 				$rc_prim = $rc - $ratingChange; // single player lost, he loses additional delta
 			}
 
-			if (checkPassword($_REQUEST['pass'])) {
-				
-				mysqli_query($con, "UPDATE gracze SET punkty = " . $ra_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $a . "'");
-				if ($b !== 'null') {
-					mysqli_query($con, "UPDATE gracze SET punkty = " . $rb_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $b . "'");
-				}
-				mysqli_query($con, "UPDATE gracze SET punkty = " . $rc_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $c . "'");
-				if ($d !== 'null') {
-					mysqli_query($con, "UPDATE gracze SET punkty = " . $rd_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $d . "'");
-				}
-				
-				$cd = ($_REQUEST['ab'] == 10) ? $_REQUEST['cd'] : $_REQUEST['ab'];
-				$delta = abs($ratingChange);
-				$a = "'$a'";
-				if ($b !== 'null') $b = "'$b'";
-				$c = "'$c'";
-				if ($d !== 'null') $d = "'$d'";
-				mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $delta)");
-				
-				$ranking = getRanking($con);
-				
-				$goodPassword = true;
-			} else {
-				$wrongPassword = true;
+			mysqli_query($con, "UPDATE gracze SET punkty = " . $ra_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $a . "'");
+			if ($b !== 'null') {
+				mysqli_query($con, "UPDATE gracze SET punkty = " . $rb_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $b . "'");
 			}
+			mysqli_query($con, "UPDATE gracze SET punkty = " . $rc_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $c . "'");
+			if ($d !== 'null') {
+				mysqli_query($con, "UPDATE gracze SET punkty = " . $rd_prim . ", meczy = meczy + 1 WHERE nazwisko = '". $d . "'");
+			}
+			
+			$cd = ($_REQUEST['ab'] == 10) ? $_REQUEST['cd'] : $_REQUEST['ab'];
+			$delta = abs($ratingChange);
+			$a = "'$a'";
+			if ($b !== 'null') $b = "'$b'";
+			$c = "'$c'";
+			if ($d !== 'null') $d = "'$d'";
+			mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $delta)");
+			
+			$ranking = getRanking($con);
+			$saved = true;
 		}
 	}
 }
@@ -108,13 +101,12 @@ require 'header.php';
 
 <div class="container">
 
-<?php if (isset($goodPassword)) echo '<div class="alert alert-success">Zapisano :)</div>' ?>
-<?php if (isset($wrongPassword)) echo '<div class="alert alert-warning">Nie zapisano. Złe hasło.</div>' ?>
-<?php if (isset($badTeams)) echo '<div class="alert alert-warning">Nie zapisano. Błędne drużyny.</div>' ?>
+<?php if (isset($saved)) echo '<div class="alert alert-success">Added :)</div>' ?>
+<?php if (isset($badTeams)) echo '<div class="alert alert-warning">Not added, invalid teams.</div>' ?>
 
 <div class="jumbotron">
 <form method="post" >
-	<h3>Drużyny</h3>
+	<h3>Teams</h3>
 	<div class="row form-group">
 		<div class="col-xs-6 <?php if (isset($ratingChange) && ($_REQUEST['ab'] == 10)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
@@ -167,11 +159,11 @@ require 'header.php';
 			</select>
 		</div>
 	</div>
-	<h3>Wynik</h3>
+	<h3>Score</h3>
 	<h6><span id="expected">&nbsp;</span></h6>
 	<div class="row form-group <?php if ($noOneTen) echo 'has-error'; ?>">
 		<div class="col-xs-6">
-			<?php if ($noOneTen) echo '<label class="control-label" for="ab">Gramy do 10 bramek</label>'; ?>
+			<?php if ($noOneTen) echo '<label class="control-label" for="ab">One of the team should have 10 goals</label>'; ?>
 			<select class="form-control" name="ab" id="ab">
 			<?php
 				if (!isset($_REQUEST['ab'])) $_REQUEST['ab'] = 10;
@@ -183,7 +175,7 @@ require 'header.php';
 			</select>
 		</div>
 		<div class="col-xs-6">
-			<?php if ($noOneTen) echo '<label class="control-label" for="cd">Gramy do 10 bramek</label>'; ?>
+			<?php if ($noOneTen) echo '<label class="control-label" for="cd">One of the team should have 10 goals</label>'; ?>
 			<select class="form-control" name="cd" id="cd">
 			<?php
 				if (!isset($_REQUEST['cd'])) $_REQUEST['cd'] = 8;
@@ -196,12 +188,7 @@ require 'header.php';
 		</div>
 	</div>
 	
-	<h3>Hasło</h3>
-	<div class="form-group">
-		<input type="password" class="form-control" name="pass">
-	</div>
-	
-	<button type="submit" class="btn btn-success">Zapisz wynik</button>
+	<button type="submit" class="btn btn-success">Add</button>
 </form>
 </div>
 
@@ -231,7 +218,7 @@ function setExpectedResult() {
 				d: $("#d").val()
 			},
 			success: function(data) {
-				$("#expected").html('(oczekiwany ' + data + ')');
+				$("#expected").html('(expected ' + data + ')');
 			}
 		});
 	}

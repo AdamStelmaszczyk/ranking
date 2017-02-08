@@ -35,22 +35,22 @@ require 'header.php';
 
 <div class="container">
 
-<?php if (isset($undo)) echo '<div class="alert alert-success">Wycofano.</div>' ?>
-<?php if (isset($wrongPassword)) echo '<div class="alert alert-warning">Nie wycofano. Złe hasło.</div>' ?>
+<?php if (isset($undo)) echo '<div class="alert alert-success">Done.</div>' ?>
+<?php if (isset($wrongPassword)) echo '<div class="alert alert-warning">Bad password.</div>' ?>
 
 <div class="jumbotron">
 
-	<h3>Ostatnie mecze</h3>
+	<h3>Last games</h3>
 	
-	<h6>(<a href="#" id="undo" title="Usuń ostatni mecz. Tej operacji nie da się odwrócić.">wycofaj ostatni</a>)</h6>
+	<h6>(<a href="#" id="undo" title="Delete last game. You can't undo this operation.">Undo last game</a>)</h6>
 	
 	<div id="password">
 		<form method="post">
-			<h3>Hasło</h3>
+			<h3>Password</h3>
 			<div class="form-group">
 				<input type="password" class="form-control" name="pass">
 			</div>
-			<button type="submit" class="btn btn-success" style="margin-bottom: 20px">Wycofaj</button>
+			<button type="submit" class="btn btn-success" style="margin-bottom: 20px">Undo</button>
 		</form>
 	</div>
 	
@@ -58,11 +58,11 @@ require 'header.php';
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Punkty</th>
-					<th>Drużyna</th>
-					<th>Wynik</th>
-					<th>Drużyna</th>
-					<th>Punkty</th>
+					<th>Points</th>
+					<th>Team</th>
+					<th>Score</th>
+					<th>Team</th>
+					<th>Points</th>
 				</tr>
 			</thead>
 			<tbody id="tbody">
@@ -91,20 +91,20 @@ require 'header.php';
 	<h3>Ranking </h3>
         <h6>(<?php
             if (!$allPlayers) {
-            	echo '<a href="index.php?allPlayers=true" title="Aktywni zawodnicy wprowadzili mecz w ostatnich 2 miesiącach. Kliknij, aby przełączyć.">aktywnych</a>';
+            	echo '<a href="index.php?allPlayers=true" title="Active players played a game in the last month. Click, to switch.">active</a>';
             } else {
-            	echo '<a href="index.php?allPlayers=false" title="Aktywni zawodnicy wprowadzili mecz w ostatnich 2 miesiącach. Kliknij, aby przełączyć.">wszystkich</a>';  
+            	echo '<a href="index.php?allPlayers=false" title="Active players played a game in the last month. Click, to switch.">all</a>';
             }
             ?>
-            zawodników na podstawie <?php echo $total_matches; ?> meczy)</h6>
+            players based on <?php echo $total_matches; ?> games)</h6>
 	
 	<table class="table table-striped text-left">
 		<thead>
 			<tr>
-				<th>Miejsce</th>
-				<th>Zawodnik</th>
-				<th>% zwycięstw</th>
-				<th>Punkty</th>
+				<th>Place</th>
+				<th>Player</th>
+				<th>% wins</th>
+				<th>Points</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -113,7 +113,7 @@ require 'header.php';
 				$lastPoints = 0;
 				$lastPercent = 0;
 				foreach ($ranking as $row) {
-					$percent = ($row['meczy'] == 0) ? 'brak' : round(100 * $row['wygranych'] / $row['meczy']);
+					$percent = ($row['meczy'] == 0) ? 'n/a' : round(100 * $row['wygranych'] / $row['meczy']);
 					if ($lastPoints != $row['punkty'] || $lastPercent != $percent) {
 						$placeToRender = $place;
 					}
@@ -137,7 +137,7 @@ require 'header.php';
 </div>
 
 <div style="text-align: center; padding: 10px">
-	<a href="https://github.com/AdamStelmaszczyk/ranking">Chcesz mieć taki ranking? A może masz uwagi? Odwiedź stronę projektu.</a>
+	<a href="https://github.com/AdamStelmaszczyk/ranking">Would you like to have such ranking? Or maybe you have some remarks? See the GitHub repo.</a>
 </div>
 
 <script>
@@ -152,7 +152,7 @@ $('.name').popover({
 	placement: 'top',
 	html: true,
 	trigger: 'click focus',
-	title: 'Punkty zawodnika w czasie',
+	title: 'Points over time',
 	content: function() { 
 		return getContent($.now(), $(this).attr('id')); 
 	}
@@ -246,7 +246,7 @@ $.ajax({
 			},
 			yAxis: {
 				title: {
-					text: 'Liczba zawodników'
+					text: 'Number of players'
 				},
 				tickInterval: 1
 			},

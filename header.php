@@ -25,10 +25,10 @@
   <div class="container">
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-        <li id="nav1"><a href="index.php">Ranking i ostatnie mecze</a></li>
-		<li id="nav2"><a href="match.php">Dodaj mecz</a></li>
-        <li id="nav3"><a href="player.php">Dodaj zawodnika</a></li>
-        <li id="nav4"><a href="algorithm.php">Opis algorytmu</a></li>
+        <li id="nav1"><a href="index.php">Ranking & last games</a></li>
+        <li id="nav2"><a href="match.php">Add a game</a></li>
+        <li id="nav3"><a href="player.php">Add a player</a></li>
+        <li id="nav4"><a href="http://math.stackexchange.com/questions/838809/rating-system-for-2-vs-2-2-vs-1-and-1-vs-1-game/838951#838951">Algorithm description</a></li>
       </ul>
     </div>
   </div>
