@@ -17,7 +17,7 @@ function getRanking($con) {
 
 function getRankingForActivePlayers($con) {
 	$result = mysqli_query($con, "SELECT imie, nazwisko, punkty, meczy, wygranych FROM gracze "
-                . " WHERE DATE_SUB(NOW(), INTERVAL 60 DAY) < (select  max(data) from mecze where a like nazwisko OR b like nazwisko OR c like nazwisko OR d like nazwisko)   ORDER BY punkty DESC, wygranych/meczy DESC");
+                . " WHERE DATE_SUB(NOW(), INTERVAL 30 DAY) < (select  max(data) from mecze where a like nazwisko OR b like nazwisko OR c like nazwisko OR d like nazwisko)   ORDER BY punkty DESC, wygranych/meczy DESC");
 	$ranking = array();
                  
 	while ($row = mysqli_fetch_array($result)) {
