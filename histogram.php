@@ -5,7 +5,7 @@ require 'math.php';
 require 'db.php';
 require 'connect.php';
 
-if ($_REQUEST['allPlayers'] === "true") {
+if (isset($_REQUEST['allPlayers']) && $_REQUEST['allPlayers'] === "true") {
 	$ranking = getRanking($con);
 } else {
 	$ranking = getRankingForActivePlayers($con);
@@ -16,6 +16,9 @@ $step = 50;
 $bins = array();
 foreach ($ranking as $row) {
 	$bin = $row['punkty'] / $step;
+	if (!isset($bins[$bin])) {
+		$bins[$bin] = 0;
+  }
 	$bins[$bin]++;
 }
 

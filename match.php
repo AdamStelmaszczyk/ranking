@@ -6,6 +6,8 @@ require 'connect.php';
 $ranking = getRanking($con);
 $surnames = getSortedSurnames($ranking);
 
+$noOneTen = false;
+
 if (isset($_REQUEST['a']) && 
 	isset($_REQUEST['b']) && 
 	isset($_REQUEST['c']) && 

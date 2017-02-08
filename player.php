@@ -37,13 +37,13 @@ if (isset($wrongFields)) echo '<div class="alert alert-warning">Nie zapisano. Wy
 	<h3>Imię</h3>
 	
 	<div class="form-group">
-		<input class="form-control" name="name" value="<?= $_REQUEST['name'] ?>">
+		<input class="form-control" name="name">
 	</div>
 	
 	<h3>Nazwisko</h3>
 	
 	<div class="form-group">
-		<input class="form-control" name="surname" value="<?= $_REQUEST['surname'] ?>">
+		<input class="form-control" name="surname">
 	</div>
 	
 	<h3>Hasło</h3>
