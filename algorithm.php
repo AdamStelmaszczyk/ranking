@@ -76,4 +76,4 @@ require 'header.php';
 <script>$("#nav4").addClass('active');</script>
 
 <!-- MathJax JS -->
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
