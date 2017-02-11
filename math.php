@@ -22,11 +22,11 @@ function ratingChange($actualScore, $expectedScore) {
 
 function actualScoreToResult($actualScore) {
 	if ($actualScore >= 0.5) {
-		$cd = round((1 - $actualScore) / 0.05);
+		$cd = round(10 / $actualScore - 10);
 		if ($cd == 10) $cd = 9;
 		return "10:$cd";
 	} 
-	$ab = round($actualScore / 0.05);
+	$ab = round(10 * $actualScore / (1 - $actualScore));
 	if ($ab == 10) $ab = 9;
 	return "$ab:10";
 }
