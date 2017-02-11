@@ -2,10 +2,10 @@
 
 function actualScore($ab, $cd) {
 	if ($ab == 10) {
-		return 1 - $cd * 0.05;
+		return 10 / (10 + $cd);
 	}
 	if ($cd == 10) {
-		return $ab * 0.05;
+		return 1 - 10 / (10 + $ab);
 	}
 	throw new Exception('Illegal argument, one team must have 10 goals.');
 }
