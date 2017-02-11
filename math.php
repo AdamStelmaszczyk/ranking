@@ -17,9 +17,6 @@ function expectedScore($ra, $rb, $rc, $rd) {
 }
 
 function ratingChange($actualScore, $expectedScore) {
-	if (($actualScore > 0.5 && $actualScore < $expectedScore) || ($actualScore < 0.5 && $actualScore > $expectedScore)) {
-		return 0;
-	}
 	return round(100 * ($actualScore - $expectedScore));
 }
 
