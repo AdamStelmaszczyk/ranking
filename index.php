@@ -240,6 +240,9 @@ $.ajax({
 				text: null
 			},
 			xAxis: {
+				title: {
+					text: 'Points'
+				},
 				floor: 0,
 				minPadding: 0.1,
 				maxPadding: 0.1
@@ -248,7 +251,8 @@ $.ajax({
 				title: {
 					text: 'Number of players'
 				},
-				tickInterval: 1
+				tickInterval: 2,
+				min: 0
 			},
 			tooltip: {
 				enabled: false
