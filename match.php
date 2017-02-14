@@ -84,12 +84,11 @@ if (isset($_REQUEST['a']) &&
 			}
 			
 			$cd = ($_REQUEST['ab'] == 10) ? $_REQUEST['cd'] : $_REQUEST['ab'];
-			$delta = abs($ratingChange);
 			$a = "'$a'";
 			if ($b !== 'null') $b = "'$b'";
 			$c = "'$c'";
 			if ($d !== 'null') $d = "'$d'";
-			mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $delta)");
+			mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $ratingChange)");
 			
 			$ranking = getRanking($con);
 			$saved = true;
@@ -108,10 +107,10 @@ require 'header.php';
 <form method="post" >
 	<h3>Teams</h3>
 	<div class="row form-group">
-		<div class="col-xs-6 <?php if (isset($ratingChange) && ($_REQUEST['ab'] == 10)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && ($ratingChange > 0)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
-				<?php echo ($_REQUEST['ab'] == 10) ? sprintf("%+d", $ratingChange) : sprintf("%d", -$ratingChange) ?>
+				<?php echo ($ratingChange > 0) ? sprintf("%+d", $ratingChange) : $ratingChange ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="a" id="a">
@@ -133,10 +132,10 @@ require 'header.php';
 				?>
 			</select>
 		</div>
-		<div class="col-xs-6 <?php if (isset($ratingChange) && ($_REQUEST['cd'] == 10)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($ratingChange) && (-$ratingChange > 0)) echo "has-success"; ?> has-feedback">
 			<?php if (isset($ratingChange)) { ?>
 				<label class="control-label" for="a">
-				<?php echo ($_REQUEST['cd'] == 10) ? sprintf("%+d", $ratingChange) : sprintf("%d", -$ratingChange) ?>
+				<?php echo (-$ratingChange > 0) ? sprintf("%+d", -$ratingChange) : -$ratingChange ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="c" id="c">
