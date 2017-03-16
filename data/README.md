@@ -1,5 +1,4 @@
-[6213_games.csv](https://github.com/AdamStelmaszczyk/ranking/blob/master/data/6213_games.csv) file description
-===
+[6213_games.csv](https://github.com/AdamStelmaszczyk/ranking/blob/master/data/6213_games.csv) file contains outcomes of 6213 real table football games that took place in years 2014 - 2017.
 
 Columns descriptions:
 
