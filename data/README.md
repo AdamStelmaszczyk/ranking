@@ -9,5 +9,5 @@ Columns descriptions:
 4. `player_c_id` - integer, ID of the first player C from the losers team CD.
 5. `player_d_id` - integer or NULL, ID of the second player D, if exists (otherwise NULL) from the losers team CD.
 6. `team_ab_goals` - integer number of winners team's goals. Always 10.
-7. `team_cd_goals` - integer number of losers team's goals, from [0; 9].
+7. `team_cd_goals` - integer number of losers team's goals. From [0; 9].
 8. `entry_time_in_edt` - EDT (Eastern Daylight Time) at which the game was inserted into a database (which is usually couple of seconds/minutes after the game ends), `%Y-%m-%d %H:%M:%S` [format](http://strftime.org).
