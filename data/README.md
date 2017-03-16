@@ -1,4 +1,4 @@
-[6213_games.csv](https://github.com/AdamStelmaszczyk/ranking/blob/master/data/6213_games.csv) file contains outcomes of 6213 real table football games that took place in years 2014 - 2017. 112 players participated in those games. Most of them are 2 vs 2, some of them are 2 vs 1 and 1 vs 1.
+[6213_games.csv](https://github.com/AdamStelmaszczyk/ranking/blob/master/data/6213_games.csv) file contains outcomes of 6213 real table football games that took place in years 2014 - 2017. 112 players participated in those games. Most of them were 2 vs 2, some of them 2 vs 1 and 1 vs 1.
 
 Columns descriptions:
 
