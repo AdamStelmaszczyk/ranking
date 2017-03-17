@@ -74,7 +74,7 @@ require 'header.php';
 						echo '<td class="col-md-1">' . (($delta >= 0) ? "+$delta" : "$delta") . '</td>';
 						echo '<td class="col-md-4"><strong><a class="scroll" style="color:' . getNameColor($ranking, $row['a']) . '">' . $row['a'] .'</a> <a class="scroll" style="color:' . getNameColor($ranking, $row['b']) . '">' . $row['b'] . '</a></strong></td>';
 						echo '<td class="col-md-1">10:'.$row['cd'].'</td>';
-						echo '<td class="col-md-4"><strong><a class="scroll" style="color:' . getNameColor($ranking, $row['c']) . '">' . $row['c'] .'</span> <a class="scroll" style="color:' . getNameColor($ranking, $row['d']) . '">' . $row['d'] . '</a></strong></td>';
+						echo '<td class="col-md-4"><strong><a class="scroll" style="color:' . getNameColor($ranking, $row['c']) . '">' . $row['c'] .'</a> <a class="scroll" style="color:' . getNameColor($ranking, $row['d']) . '">' . $row['d'] . '</a></strong></td>';
 						$delta = $row['delta'];
 						if (!isset($row['d']) && isset($row['b'])) $delta = 2 * $row['delta'];
 						echo '<td class="col-md-1">' . (($delta >= 0) ? "-$delta" : "+" . (-$delta)) . '</td>';
