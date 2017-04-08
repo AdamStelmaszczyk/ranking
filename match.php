@@ -59,19 +59,19 @@ if (isset($_REQUEST['a']) &&
 			
 			$expectedScore = expectedScore($ra, $rb, $rc, $rd);
 			
-			$ratingChange = ratingChange($actualScore, $expectedScore); // ratingChange is delta
+			$delta = ratingChange($actualScore, $expectedScore);
 
-			$ra_prim = $ra + $ratingChange;
-			$rb_prim = $rb + $ratingChange;
-			$rc_prim = $rc - $ratingChange;
-			$rd_prim = $rd - $ratingChange;
+			$ra_prim = $ra + $delta;
+			$rb_prim = $rb + $delta;
+			$rc_prim = $rc - $delta;
+			$rd_prim = $rd - $delta;
 
 			// 1 vs 2 case
 			if ($b === 'null' && $d !== 'null') {
-				$ra_prim = $ra + $ratingChange; // single player won, he wins additional delta
+				$ra_prim = $ra + $delta; // single player won, he wins additional delta
 			}
 			if ($d === 'null' && $b !== 'null') {
-				$rc_prim = $rc - $ratingChange; // single player lost, he loses additional delta
+				$rc_prim = $rc - $delta; // single player lost, he loses additional delta
 			}
 
 			mysqli_query($con, "UPDATE gracze SET punkty = " . $ra_prim . ", meczy = meczy + 1, wygranych = wygranych + 1 WHERE nazwisko = '". $a . "'");
@@ -88,7 +88,7 @@ if (isset($_REQUEST['a']) &&
 			if ($b !== 'null') $b = "'$b'";
 			$c = "'$c'";
 			if ($d !== 'null') $d = "'$d'";
-			mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $ratingChange)");
+			mysqli_query($con, "INSERT INTO mecze (a, b, c, d, cd, delta) VALUES ($a, $b, $c, $d, $cd, $delta)");
 			
 			$ranking = getRanking($con);
 			$saved = true;
@@ -107,10 +107,10 @@ require 'header.php';
 <form method="post" >
 	<h3>Teams</h3>
 	<div class="row form-group">
-		<div class="col-xs-6 <?php if (isset($ratingChange) && ($ratingChange > 0)) echo "has-success"; ?> has-feedback">
-			<?php if (isset($ratingChange)) { ?>
+		<div class="col-xs-6 <?php if (isset($delta) && ($delta > 0)) echo "has-success"; ?> has-feedback">
+			<?php if (isset($delta)) { ?>
 				<label class="control-label" for="a">
-				<?php echo ($ratingChange > 0) ? sprintf("%+d", $ratingChange) : $ratingChange ?>
+				<?php echo ($delta > 0) ? sprintf("%+d", $delta) : $delta ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="a" id="a">
@@ -132,10 +132,10 @@ require 'header.php';
 				?>
 			</select>
 		</div>
-		<div class="col-xs-6 <?php if (isset($ratingChange) && (-$ratingChange > 0)) echo "has-success"; ?> has-feedback">
-			<?php if (isset($ratingChange)) { ?>
+		<div class="col-xs-6 <?php if (isset($delta) && (-$delta > 0)) echo "has-success"; ?> has-feedback">
+			<?php if (isset($delta)) { ?>
 				<label class="control-label" for="a">
-				<?php echo (-$ratingChange > 0) ? sprintf("%+d", -$ratingChange) : -$ratingChange ?>
+				<?php echo (-$delta > 0) ? sprintf("%+d", -$delta) : -$delta ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="c" id="c">
