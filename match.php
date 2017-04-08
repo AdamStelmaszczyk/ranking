@@ -61,6 +61,8 @@ if (isset($_REQUEST['a']) &&
 			
 			$delta = ratingChange($actualScore, $expectedScore);
 
+      $positiveLeft = ($_REQUEST['ab'] == 10 && $delta > 0) || ($_REQUEST['cd'] == 10 && $delta < 0);
+
 			$ra_prim = $ra + $delta;
 			$rb_prim = $rb + $delta;
 			$rc_prim = $rc - $delta;
@@ -107,10 +109,10 @@ require 'header.php';
 <form method="post" >
 	<h3>Teams</h3>
 	<div class="row form-group">
-		<div class="col-xs-6 <?php if (isset($delta) && ($delta > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($positiveLeft) && $positiveLeft) echo "has-success"; ?> has-feedback">
 			<?php if (isset($delta)) { ?>
 				<label class="control-label" for="a">
-				<?php echo ($delta > 0) ? sprintf("%+d", $delta) : $delta ?>
+				<?php echo ($positiveLeft) ? sprintf("%+d", abs($delta)) : sprintf("-%d", abs($delta)) ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="a" id="a">
@@ -132,10 +134,10 @@ require 'header.php';
 				?>
 			</select>
 		</div>
-		<div class="col-xs-6 <?php if (isset($delta) && (-$delta > 0)) echo "has-success"; ?> has-feedback">
+		<div class="col-xs-6 <?php if (isset($positiveLeft) && !$positiveLeft) echo "has-success"; ?> has-feedback">
 			<?php if (isset($delta)) { ?>
 				<label class="control-label" for="a">
-				<?php echo (-$delta > 0) ? sprintf("%+d", -$delta) : -$delta ?>
+				<?php echo (!$positiveLeft) ? sprintf("%+d", abs($delta)) : sprintf("-%d", abs($delta)) ?>
 				</label>
 			<?php } ?>
 			<select class="form-control" name="c" id="c">
