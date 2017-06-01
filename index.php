@@ -12,13 +12,9 @@ if (isset($_REQUEST['pass'])) {
 	}
 }
 
-$allPlayers = false;
-if (isset($_REQUEST['allPlayers'])) {
-    $allPlayers = ($_REQUEST['allPlayers'] === "true")?true:false;
-    $ranking = ($_REQUEST['allPlayers'] === "true")?getRanking($con):getRankingForActivePlayers($con);    
-} else {
-    $ranking = getRankingForActivePlayers($con);    
-}
+$ranking = getRanking($con);
+$rankingActive = getRankingForActivePlayers($con);
+$allPlayers = isset($_REQUEST['allPlayers']) && $_REQUEST['allPlayers'] === "true";
  
 $matches = getMatches($con);
 $total_matches = getTotalMatches($con);
@@ -112,7 +108,8 @@ require 'header.php';
 				$placeToRender = $place = 1;
 				$lastPoints = 0;
 				$lastPercent = 0;
-				foreach ($ranking as $row) {
+        $r = $allPlayers ? $ranking : $rankingActive;
+				foreach ($r as $row) {
 					$percent = ($row['meczy'] == 0) ? 'n/a' : round(100 * $row['wygranych'] / $row['meczy']);
 					if ($lastPoints != $row['punkty'] || $lastPercent != $percent) {
 						$placeToRender = $place;
